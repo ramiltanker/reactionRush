@@ -1,18 +1,42 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { COLORS, APP_NAME } from "../../../shared/config";
+import { COLORS } from "../../../shared/config";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../app";
+
+import { useTranslation } from "react-i18next";
+import { useMenuMusic } from "../lib/hooks";
 
 export function MenuPage() {
+  const { t } = useTranslation();
+
+  const isFocused = useIsFocused();
+
+  useMenuMusic(isFocused);
+
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
     <View style={styles.root}>
-      <Text style={styles.title}>{APP_NAME}</Text>
-
-      <Pressable style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Play</Text>
+      <Text style={styles.title}>{t("appName")}</Text>
+      <Pressable style={styles.button} onPress={() => navigation.navigate("Game")}>
+        <Text style={styles.buttonText}>{t("play")}</Text>
       </Pressable>
-
       <Pressable style={[styles.button, styles.secondary]} onPress={() => {}}>
-        <Text style={[styles.buttonText, styles.secondaryText]}>Leaderboard</Text>
+        <Text style={[styles.buttonText, styles.secondaryText]}>{t("leaderboard")}</Text>
+      </Pressable>
+      <Pressable
+        style={[styles.button, styles.secondary]}
+        onPress={() => navigation.navigate("Settings")}
+      >
+        <Text style={[styles.buttonText, styles.secondaryText]}>{t("settingsTitle")}</Text>
+      </Pressable>
+      <Pressable
+        style={[styles.button, styles.secondary]}
+        onPress={() => navigation.navigate("Rules")}
+      >
+        <Text style={[styles.buttonText, styles.secondaryText]}>{t("rules")}</Text>
       </Pressable>
     </View>
   );
